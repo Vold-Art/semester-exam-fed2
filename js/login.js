@@ -1,3 +1,5 @@
+import { showToast } from "./utils/toast.js";
+
 const form = document.getElementById("login-form");
 const emailInput = document.getElementById("login-email");
 const passwordInput = document.getElementById("login-password");
@@ -10,10 +12,7 @@ const API_BASE = "https://v2.api.noroff.dev";
 async function loginUser(email, password) {
 	const url = `${API_BASE}/auth/login`;
 
-	const payload = {
-		email,
-		password,
-	};
+	const payload = { email, password };
 
 	const response = await fetch(url, {
 		method: "POST",
@@ -43,13 +42,12 @@ if (form) {
 
 		if (!email || !password) {
 			errorBox.textContent = "Please enter email and password.";
+			showToast("Please enter email and password.", "error");
 			return;
 		}
 
 		try {
 			const result = await loginUser(email, password);
-
-			/* Store token + user in localStorage */
 
 			const token = result.data?.accessToken ?? result.accessToken;
 			const profile = result.data ?? result;
@@ -59,11 +57,18 @@ if (form) {
 			}
 			localStorage.setItem("auction_user", JSON.stringify(profile));
 
-			/* Success sends to Login-page */
-			window.location.href = "index.html";
+			showToast("Login successful!", "success");
+
+			/* Small delay before redirect */
+
+			setTimeout(() => {
+				window.location.href = "index.html";
+			}, 800);
 		} catch (error) {
-			errorBox.textContent =
+			const msg =
 				error instanceof Error ? error.message : "Something went wrong.";
+			errorBox.textContent = msg;
+			showToast(msg || "Invalid email or password", "error");
 		}
 	});
 }

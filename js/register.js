@@ -1,3 +1,5 @@
+import { showToast } from "./utils/toast.js";
+
 const form = document.getElementById("register-form");
 const nameInput = document.getElementById("reg-name");
 const emailInput = document.getElementById("reg-email");
@@ -44,20 +46,34 @@ if (form) {
 		const email = emailInput.value.trim();
 		const password = passwordInput.value;
 
-		/* Basic check - Improve later */
-
+		/* Basic check - improve later */
 		if (!name || !email || !password) {
 			errorBox.textContent = "Please fill in all fields.";
+			showToast("Please fill in all fields.", "error");
 			return;
 		}
 
 		try {
 			await registerUser(name, email, password);
-			/* Success sends to Login-page */
-			window.location.href = "login.html";
+
+			showToast("Account created successfully!", "success");
+
+			/* Small delay before redirect */
+
+			setTimeout(() => {
+				window.location.href = "login.html";
+			}, 800);
 		} catch (error) {
-			errorBox.textContent =
+			const message =
 				error instanceof Error ? error.message : "Something went wrong.";
+
+			errorBox.textContent = message;
+
+			if (message.toLowerCase().includes("stud.noroff.no")) {
+				showToast("Only @stud.noroff.no emails allowed", "error");
+			} else {
+				showToast(message, "error");
+			}
 		}
 	});
 }
