@@ -8,6 +8,8 @@
 	</head>
 
 	<body>
+		<header id="main-header"></header>
+
 		<main>
 			<a href="index.html">← Back to listings</a>
 			<h1>Listing</h1>
@@ -15,8 +17,16 @@
 			<section id="listing"></section>
 
 			<p id="listing-error" style="color: crimson"></p>
+
+			<section id="bid-section"></section>
 		</main>
 
+		<script type="module" src="./js/utils/header.js"></script>
 		<script type="module" src="./js/listing.js"></script>
+
+		<div
+			id="toast-container"
+			class="fixed inset-0 flex items-center justify-center pointer-events-none z-50"
+		></div>
 	</body>
 </html>
