@@ -22,6 +22,7 @@ function renderHeader() {
       </span>
 
       <a href="profile.html" style="margin-right: 1rem;">Profile</a>
+      <a href="create-listing.html" style="margin-right: 1rem;">Create listing</a>
 
       <button id="logout-button" style="padding: 0.3rem 0.75rem;">
         Log out

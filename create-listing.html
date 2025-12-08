@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Create Listing</title>
+		<link rel="stylesheet" href="./css/style.css" />
+	</head>
+
+	<body>
+		<header id="main-header"></header>
+
+		<main>
+			<h1>Create a new listing</h1>
+
+			<form id="create-listing-form">
+				<div>
+					<label for="listing-title">Title</label>
+					<input id="listing-title" type="text" required />
+				</div>
+
+				<div>
+					<label for="listing-description">Description</label>
+					<textarea
+						id="listing-description"
+						rows="4"
+						placeholder="Describe your item"
+					></textarea>
+				</div>
+
+				<div>
+					<label for="listing-ends-at">End date and time</label>
+					<input id="listing-ends-at" type="datetime-local" required />
+					<p style="font-size: 0.85rem">
+						The auction must end at least 1 hour in the future.
+					</p>
+				</div>
+
+				<div>
+					<label for="listing-media-1">Image URL 1</label>
+					<input
+						id="listing-media-1"
+						type="url"
+						placeholder="https://example.com/image.jpg"
+					/>
+				</div>
+
+				<div>
+					<label for="listing-media-2">Image URL 2 (optional)</label>
+					<input
+						id="listing-media-2"
+						type="url"
+						placeholder="https://example.com/image2.jpg"
+					/>
+				</div>
+
+				<div>
+					<label for="listing-media-3">Image URL 3 (optional)</label>
+					<input
+						id="listing-media-3"
+						type="url"
+						placeholder="https://example.com/image3.jpg"
+					/>
+				</div>
+
+				<button type="submit">Create listing</button>
+			</form>
+
+			<p id="create-listing-error" style="color: crimson"></p>
+		</main>
+
+		<script type="module" src="./js/utils/header.js"></script>
+		<script type="module" src="./js/create-listing.js"></script>
+
+		<div
+			id="toast-container"
+			class="fixed inset-0 flex items-center justify-center pointer-events-none z-50"
+		></div>
+	</body>
+</html>
