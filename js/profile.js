@@ -1,3 +1,5 @@
+import { showToast } from "./utils/toast.js";
+
 const profileInfo = document.getElementById("profile-info");
 const myListingsSection = document.getElementById("my-listings");
 const myBidsSection = document.getElementById("my-bids");
@@ -11,13 +13,9 @@ const token = localStorage.getItem("auction_token");
 const currentUser = storedUser ? JSON.parse(storedUser) : null;
 
 if (!currentUser || !token) {
-	// Not logged in → send to login
 	window.location.href = "login.html";
 }
 
-/**
- * Render basic profile info: name, email, avatar, banner, credits, bio
- */
 function renderProfileInfo(profile) {
 	if (!profileInfo) return;
 
@@ -68,9 +66,6 @@ function renderProfileInfo(profile) {
   `;
 }
 
-/**
- * Fetch full profile data from API (to get latest credits, avatar, banner, bio)
- */
 async function fetchProfile(name) {
 	const url = `${API_BASE}/auction/profiles/${encodeURIComponent(
 		name
@@ -142,6 +137,39 @@ async function fetchMyBids(name) {
 	return data.data ?? data;
 }
 
+async function deleteListing(id) {
+	const confirmed = window.confirm(
+		"Are you sure you want to delete this listing? This cannot be undone."
+	);
+	if (!confirmed) return;
+
+	try {
+		const response = await fetch(`${API_BASE}/auction/listings/${id}`, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+				"X-Noroff-API-Key": API_KEY,
+			},
+		});
+
+		if (!response.ok) {
+			const data = await response.json();
+			const message = data.errors?.[0]?.message || "Failed to delete listing.";
+			throw new Error(message);
+		}
+
+		showToast("Listing deleted.", "success");
+
+		await loadProfilePage();
+	} catch (error) {
+		const message =
+			error instanceof Error ? error.message : "Something went wrong.";
+		if (errorBox) errorBox.textContent = message;
+		showToast(message, "error");
+	}
+}
+
 function renderMyListings(listings) {
 	if (!myListingsSection) return;
 
@@ -183,10 +211,52 @@ function renderMyListings(listings) {
           <p>${description}</p>
           <p><strong>Ends at:</strong> ${endsAt}</p>
           <p><strong>Highest bid:</strong> ${highestBid}</p>
+
+          <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
+            <button 
+              class="edit-listing-btn" 
+              data-listing-id="${listing.id}"
+              style="padding:0.3rem 0.75rem;"
+            >
+              Edit
+            </button>
+
+            <button 
+              class="delete-listing-btn" 
+              data-listing-id="${listing.id}"
+              style="padding:0.3rem 0.75rem; background:#b91c1c; color:white; border:none;"
+            >
+              Delete
+            </button>
+          </div>
         </article>
       `;
 		})
 		.join("");
+
+	const deleteButtons = myListingsSection.querySelectorAll(
+		".delete-listing-btn"
+	);
+
+	deleteButtons.forEach((button) => {
+		button.addEventListener("click", async () => {
+			const listingId = button.dataset.listingId;
+			if (!listingId) return;
+
+			await deleteListing(listingId);
+		});
+	});
+
+	const editButtons = myListingsSection.querySelectorAll(".edit-listing-btn");
+
+	editButtons.forEach((button) => {
+		button.addEventListener("click", () => {
+			const listingId = button.dataset.listingId;
+			if (!listingId) return;
+
+			window.location.href = `create-listing.html?id=${listingId}`;
+		});
+	});
 }
 
 function renderMyBids(bids) {

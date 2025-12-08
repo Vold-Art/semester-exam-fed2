@@ -9,8 +9,79 @@ const errorBox = document.getElementById("create-listing-error");
 const token = localStorage.getItem("auction_token");
 const storedUser = localStorage.getItem("auction_user");
 
+const params = new URLSearchParams(window.location.search);
+const listingId = params.get("id");
+const isEditMode = Boolean(listingId);
+
 if (!token || !storedUser) {
 	window.location.href = "login.html";
+}
+
+async function fetchListingToEdit(id) {
+	const url = `${API_BASE}/auction/listings/${id}`;
+
+	const response = await fetch(url, {
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${token}`,
+			"X-Noroff-API-Key": API_KEY,
+		},
+	});
+
+	const data = await response.json();
+
+	if (!response.ok) {
+		const message = data.errors?.[0]?.message || "Failed to load listing.";
+		throw new Error(message);
+	}
+
+	return data.data ?? data;
+}
+
+function populateFormFromListing(listing) {
+	const titleInput = document.getElementById("listing-title");
+	const descriptionInput = document.getElementById("listing-description");
+	const endsAtInput = document.getElementById("listing-ends-at");
+	const media1Input = document.getElementById("listing-media-1");
+	const media2Input = document.getElementById("listing-media-2");
+	const media3Input = document.getElementById("listing-media-3");
+
+	if (titleInput) titleInput.value = listing.title || "";
+	if (descriptionInput) descriptionInput.value = listing.description || "";
+
+	if (endsAtInput && listing.endsAt) {
+		const dt = new Date(listing.endsAt);
+
+		endsAtInput.value = dt.toISOString().slice(0, 16);
+	}
+
+	const media = Array.isArray(listing.media) ? listing.media : [];
+	if (media1Input) media1Input.value = media[0]?.url || "";
+	if (media2Input) media2Input.value = media[1]?.url || "";
+	if (media3Input) media3Input.value = media[2]?.url || "";
+}
+
+async function init() {
+	if (!form) return;
+
+	if (isEditMode) {
+		const heading = document.querySelector("main h1");
+		if (heading) heading.textContent = "Edit listing";
+		document.title = "Edit listing";
+
+		if (errorBox) errorBox.textContent = "Loading listing…";
+
+		try {
+			const listing = await fetchListingToEdit(listingId);
+			populateFormFromListing(listing);
+			if (errorBox) errorBox.textContent = "";
+		} catch (error) {
+			const message =
+				error instanceof Error ? error.message : "Failed to load listing.";
+			if (errorBox) errorBox.textContent = message;
+			showToast(message, "error");
+		}
+	}
 }
 
 if (form) {
@@ -56,9 +127,15 @@ if (form) {
 			media,
 		};
 
+		const endpoint = isEditMode
+			? `${API_BASE}/auction/listings/${listingId}`
+			: `${API_BASE}/auction/listings`;
+
+		const method = isEditMode ? "PUT" : "POST";
+
 		try {
-			const response = await fetch(`${API_BASE}/auction/listings`, {
-				method: "POST",
+			const response = await fetch(endpoint, {
+				method,
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
@@ -72,18 +149,27 @@ if (form) {
 			if (!response.ok) {
 				const message =
 					data.errors?.[0]?.message ||
-					"Failed to create listing. Please try again.";
+					(isEditMode
+						? "Failed to update listing. Please try again."
+						: "Failed to create listing. Please try again.");
 				throw new Error(message);
 			}
 
-			showToast("Listing created successfully!", "success");
+			showToast(
+				isEditMode
+					? "Listing updated successfully!"
+					: "Listing created successfully!",
+				"success"
+			);
 
-			form.reset();
+			if (!isEditMode) {
+				form.reset();
+			}
 
-			const created = data.data ?? data;
-			if (created && created.id) {
+			const resultListing = data.data ?? data;
+			if (resultListing && resultListing.id) {
 				setTimeout(() => {
-					window.location.href = `listing.html?id=${created.id}`;
+					window.location.href = `listing.html?id=${resultListing.id}`;
 				}, 800);
 			}
 		} catch (error) {
@@ -94,3 +180,5 @@ if (form) {
 		}
 	});
 }
+
+init();
