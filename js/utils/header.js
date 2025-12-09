@@ -1,17 +1,22 @@
+/* Get the header container from the DOM */
 const headerElement = document.getElementById("main-header");
 
+/* Renders the navigation header based on whether the user is logged in */
 function renderHeader() {
 	if (!headerElement) return;
 
+	/* Get user data from localStorage */
 	const storedUser = localStorage.getItem("auction_user");
 	const user = storedUser ? JSON.parse(storedUser) : null;
 
+	/* Build the header HTML */
 	headerElement.innerHTML = `
     <nav style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #111827; color: white;">
       <a href="index.html" style="font-weight: bold; font-size: 1.25rem;">Auction House</a>
 
       <div>
         ${
+					/* Display different options depending on login state */
 					user
 						? `
       <span style="margin-right: 1rem;">
@@ -33,19 +38,23 @@ function renderHeader() {
       <a href="register.html">Register</a>
     `
 				}
-
       </div>
     </nav>
   `;
 
+	/* Add logout functionality when button exists */
 	const logoutButton = document.getElementById("logout-button");
 	if (logoutButton) {
 		logoutButton.addEventListener("click", () => {
+			/* Clear stored login info */
 			localStorage.removeItem("auction_token");
 			localStorage.removeItem("auction_user");
+
+			/* Redirect to home */
 			window.location.href = "index.html";
 		});
 	}
 }
 
+/* Render the header immediately */
 renderHeader();

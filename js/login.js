@@ -1,14 +1,15 @@
 import { showToast } from "./utils/toast.js";
 
+/* Get form elements */
 const form = document.getElementById("login-form");
 const emailInput = document.getElementById("login-email");
 const passwordInput = document.getElementById("login-password");
 const errorBox = document.getElementById("login-error");
 
-/* Noroff Auction API base */
-
+/* Base API URL */
 const API_BASE = "https://v2.api.noroff.dev";
 
+/* Send login request to API */
 async function loginUser(email, password) {
 	const url = `${API_BASE}/auth/login`;
 
@@ -24,6 +25,7 @@ async function loginUser(email, password) {
 
 	const data = await response.json();
 
+	/* If login failed, throw error message */
 	if (!response.ok) {
 		const message = data.errors?.[0]?.message || "Login failed";
 		throw new Error(message);
@@ -32,14 +34,17 @@ async function loginUser(email, password) {
 	return data;
 }
 
+/* Handle login form submission */
 if (form) {
 	form.addEventListener("submit", async (event) => {
 		event.preventDefault();
 		errorBox.textContent = "";
 
+		/* Get values from inputs */
 		const email = emailInput.value.trim();
 		const password = passwordInput.value;
 
+		/* Basic validation */
 		if (!email || !password) {
 			errorBox.textContent = "Please enter email and password.";
 			showToast("Please enter email and password.", "error");
@@ -47,11 +52,14 @@ if (form) {
 		}
 
 		try {
+			/* Try to log user in */
 			const result = await loginUser(email, password);
 
+			/* Extract token anb full user profile */
 			const token = result.data?.accessToken ?? result.accessToken;
 			const profile = result.data ?? result;
 
+			/* Save login info in localStorage */
 			if (token) {
 				localStorage.setItem("auction_token", token);
 			}
@@ -59,12 +67,12 @@ if (form) {
 
 			showToast("Login successful!", "success");
 
-			/* Small delay before redirect */
-
+			/* Small delay before redirecting */
 			setTimeout(() => {
 				window.location.href = "index.html";
 			}, 800);
 		} catch (error) {
+			/* Show error from API */
 			const msg =
 				error instanceof Error ? error.message : "Something went wrong.";
 			errorBox.textContent = msg;

@@ -1,24 +1,30 @@
 import { showToast } from "./utils/toast.js";
 
+/* Sections on the profile page */
 const profileInfo = document.getElementById("profile-info");
 const myListingsSection = document.getElementById("my-listings");
 const myBidsSection = document.getElementById("my-bids");
 const errorBox = document.getElementById("profile-error");
 
+/* Edit profile form elements */
 const profileEditForm = document.getElementById("profile-edit-form");
 const profileEditError = document.getElementById("profile-edit-error");
 
+/* Base API info */
 const API_BASE = "https://v2.api.noroff.dev";
 const API_KEY = "cbaa0f81-8295-47e5-9872-09e6c04de25c";
 
+/* Logged-in user info */
 const storedUser = localStorage.getItem("auction_user");
 const token = localStorage.getItem("auction_token");
 const currentUser = storedUser ? JSON.parse(storedUser) : null;
 
+/* Redirect if user is not logged in */
 if (!currentUser || !token) {
 	window.location.href = "login.html";
 }
 
+/* Render main profile card */
 function renderProfileInfo(profile) {
 	if (!profileInfo) return;
 
@@ -69,6 +75,7 @@ function renderProfileInfo(profile) {
   `;
 }
 
+/* Prefill the edit profile form with current data */
 function prefillProfileEditForm(profile) {
 	if (!profileEditForm) return;
 
@@ -89,6 +96,7 @@ function prefillProfileEditForm(profile) {
 	}
 }
 
+/* Fetch the logged-in user's profile */
 async function fetchProfile(name) {
 	const url = `${API_BASE}/auction/profiles/${encodeURIComponent(
 		name
@@ -113,6 +121,7 @@ async function fetchProfile(name) {
 	return data.data ?? data;
 }
 
+/* Fetch listings created by this user */
 async function fetchMyListings(name) {
 	const url = `${API_BASE}/auction/profiles/${encodeURIComponent(
 		name
@@ -137,6 +146,7 @@ async function fetchMyListings(name) {
 	return data.data ?? data;
 }
 
+/* Fetch bids placed by this user */
 async function fetchMyBids(name) {
 	const url = `${API_BASE}/auction/profiles/${encodeURIComponent(
 		name
@@ -160,6 +170,7 @@ async function fetchMyBids(name) {
 	return data.data ?? data;
 }
 
+/* Delete a listing created by the current user */
 async function deleteListing(id) {
 	const confirmed = window.confirm(
 		"Are you sure you want to delete this listing? This cannot be undone."
@@ -184,6 +195,7 @@ async function deleteListing(id) {
 
 		showToast("Listing deleted.", "success");
 
+		/* Reload profile sections after delete */
 		await loadProfilePage();
 	} catch (error) {
 		const message =
@@ -193,6 +205,7 @@ async function deleteListing(id) {
 	}
 }
 
+/* Render all listings created by the user */
 function renderMyListings(listings) {
 	if (!myListingsSection) return;
 
@@ -257,6 +270,7 @@ function renderMyListings(listings) {
 		})
 		.join("");
 
+	/* Attach delete handlers for each delete button */
 	const deleteButtons = myListingsSection.querySelectorAll(
 		".delete-listing-btn"
 	);
@@ -270,6 +284,7 @@ function renderMyListings(listings) {
 		});
 	});
 
+	/* Attach edit handlers */
 	const editButtons = myListingsSection.querySelectorAll(".edit-listing-btn");
 
 	editButtons.forEach((button) => {
@@ -282,6 +297,7 @@ function renderMyListings(listings) {
 	});
 }
 
+/* Render all listings where the user has placed a bid */
 function renderMyBids(bids) {
 	if (!myBidsSection) return;
 
@@ -335,6 +351,7 @@ function renderMyBids(bids) {
 		.join("");
 }
 
+/* Load everything needed for the profile page */
 async function loadProfilePage() {
 	if (!currentUser) return;
 
@@ -343,10 +360,12 @@ async function loadProfilePage() {
 	if (myBidsSection) myBidsSection.innerHTML = "";
 
 	try {
+		/* Load profile info */
 		const profile = await fetchProfile(currentUser.name);
 		renderProfileInfo(profile);
 		prefillProfileEditForm(profile);
 
+		/* Load listings and bids */
 		const myListings = await fetchMyListings(currentUser.name);
 		renderMyListings(myListings);
 
@@ -362,6 +381,7 @@ async function loadProfilePage() {
 	}
 }
 
+/* Handle profile edit form submit */
 if (profileEditForm) {
 	profileEditForm.addEventListener("submit", async (event) => {
 		event.preventDefault();
@@ -375,6 +395,7 @@ if (profileEditForm) {
 		const bannerUrl = bannerInput ? bannerInput.value.trim() : "";
 		const bio = bioInput ? bioInput.value.trim() : "";
 
+		/* Build payload for update */
 		const payload = {
 			avatar: avatarUrl ? { url: avatarUrl } : null,
 			banner: bannerUrl ? { url: bannerUrl } : null,
@@ -405,6 +426,7 @@ if (profileEditForm) {
 
 			showToast("Profile updated successfully!", "success");
 
+			/* Reload profile with fresh data */
 			await loadProfilePage();
 		} catch (error) {
 			const message =
@@ -415,4 +437,5 @@ if (profileEditForm) {
 	});
 }
 
+/* Initial load when profile page opens */
 loadProfilePage();

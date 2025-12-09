@@ -1,23 +1,29 @@
 import { showToast } from "./utils/toast.js";
 
+/* Base API details */
 const API_BASE = "https://v2.api.noroff.dev";
 const API_KEY = "cbaa0f81-8295-47e5-9872-09e6c04de25c";
 
+/* Elements on the page */
 const listingContainer = document.getElementById("listing");
 const errorBox = document.getElementById("listing-error");
 const bidSection = document.getElementById("bid-section");
 
+/* Logged-in user data */
 const storedUser = localStorage.getItem("auction_user");
 const currentUser = storedUser ? JSON.parse(storedUser) : null;
 const token = localStorage.getItem("auction_token");
 
+/* Get listing ID from the URL */
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
+/* If no ID in URL, show error */
 if (!id && errorBox) {
 	errorBox.textContent = "No listing ID provided.";
 }
 
+/* Fetch a single listing including seller and bids */
 async function fetchListing(id) {
 	const url = `${API_BASE}/auction/listings/${id}?_seller=true&_bids=true`;
 
@@ -32,9 +38,11 @@ async function fetchListing(id) {
 	return data.data ?? data;
 }
 
+/* Return the bidding section depending on login status and ownership */
 function renderBidSection(listing) {
 	if (!bidSection) return;
 
+	/* If not logged in then show login/register links */
 	if (!currentUser) {
 		bidSection.innerHTML = `
       <p>You must be logged in to place a bid.</p>
@@ -43,11 +51,13 @@ function renderBidSection(listing) {
 		return;
 	}
 
+	/* Prevent bidding on your own listing */
 	if (listing.seller && listing.seller.name === currentUser.name) {
 		bidSection.innerHTML = `<p>This is your listing. You cannot bid on your own item.</p>`;
 		return;
 	}
 
+	/* Show bid form */
 	bidSection.innerHTML = `
     <h3>Place a bid</h3>
     <form id="bid-form">
@@ -63,12 +73,14 @@ function renderBidSection(listing) {
     <p id="bid-error" style="color: crimson"></p>
   `;
 
+	/* Connect submit handler */
 	const bidForm = document.getElementById("bid-form");
 	if (bidForm) {
 		bidForm.addEventListener("submit", (event) => handleBid(event, listing));
 	}
 }
 
+/* Render full listing details */
 function renderListing(listing) {
 	const title = listing.title || "Untitled";
 	const description = listing.description || "No description available.";
@@ -76,14 +88,17 @@ function renderListing(listing) {
 		? new Date(listing.endsAt).toLocaleString()
 		: "Unknown end date";
 
+	/* Use first image if available */
 	const media = Array.isArray(listing.media) ? listing.media : [];
 	const firstImage = media.length > 0 ? media[0].url : null;
 
+	/* List all bids */
 	const bids = Array.isArray(listing.bids) ? listing.bids : [];
 	const bidList = bids
 		.map((b) => `<li>${b.bidderName ?? "Anonymous"}: ${b.amount}</li>`)
 		.join("");
 
+	/* Build listing card HTML */
 	listingContainer.innerHTML = `
     <article style="background:white; padding:1rem; border:1px solid #ccc">
       <h2>${title}</h2>
@@ -102,9 +117,11 @@ function renderListing(listing) {
     </article>
   `;
 
+	/* Show the bid form */
 	renderBidSection(listing);
 }
 
+/* Handle placing a bid */
 async function handleBid(event, listing) {
 	event.preventDefault();
 
@@ -114,14 +131,15 @@ async function handleBid(event, listing) {
 
 	errorElement.textContent = "";
 
+	/* Must be logged in */
 	if (!token) {
 		errorElement.textContent = "You must be logged in to bid.";
 		showToast("You must be logged in to bid.", "error");
 		return;
 	}
 
+	/* Validate bid */
 	const amount = Number(amountInput.value);
-
 	if (!amount || amount <= 0) {
 		errorElement.textContent = "Please enter a valid bid amount.";
 		showToast("Please enter a valid bid amount.", "error");
@@ -129,6 +147,7 @@ async function handleBid(event, listing) {
 	}
 
 	try {
+		/* Send bid data to API */
 		const response = await fetch(
 			`${API_BASE}/auction/listings/${listing.id}/bids`,
 			{
@@ -153,6 +172,7 @@ async function handleBid(event, listing) {
 		showToast("Bid placed successfully!", "success");
 		amountInput.value = "";
 
+		/* Reload listing so new bid appears */
 		await load();
 	} catch (error) {
 		const message =
@@ -162,6 +182,7 @@ async function handleBid(event, listing) {
 	}
 }
 
+/* Load the listing when the page opens */
 async function load() {
 	if (!id) return;
 
@@ -179,4 +200,5 @@ async function load() {
 	}
 }
 
+/* Run on page load */
 load();

@@ -1,22 +1,28 @@
 import { showToast } from "./utils/toast.js";
 
+/* Base API info */
 const API_BASE = "https://v2.api.noroff.dev";
 const API_KEY = "cbaa0f81-8295-47e5-9872-09e6c04de25c";
 
+/* Form + error elements */
 const form = document.getElementById("create-listing-form");
 const errorBox = document.getElementById("create-listing-error");
 
+/* Logged-in user info */
 const token = localStorage.getItem("auction_token");
 const storedUser = localStorage.getItem("auction_user");
 
+/* Check if you are editing or creating */
 const params = new URLSearchParams(window.location.search);
 const listingId = params.get("id");
 const isEditMode = Boolean(listingId);
 
+/* Redirect if not logged in */
 if (!token || !storedUser) {
 	window.location.href = "login.html";
 }
 
+/* Fetch listing data when editing */
 async function fetchListingToEdit(id) {
 	const url = `${API_BASE}/auction/listings/${id}`;
 
@@ -30,6 +36,7 @@ async function fetchListingToEdit(id) {
 
 	const data = await response.json();
 
+	/* Throw error if request failed */
 	if (!response.ok) {
 		const message = data.errors?.[0]?.message || "Failed to load listing.";
 		throw new Error(message);
@@ -38,6 +45,7 @@ async function fetchListingToEdit(id) {
 	return data.data ?? data;
 }
 
+/* Fill the form with existing listing data */
 function populateFormFromListing(listing) {
 	const titleInput = document.getElementById("listing-title");
 	const descriptionInput = document.getElementById("listing-description");
@@ -49,28 +57,32 @@ function populateFormFromListing(listing) {
 	if (titleInput) titleInput.value = listing.title || "";
 	if (descriptionInput) descriptionInput.value = listing.description || "";
 
+	/* Format date/time for input field */
 	if (endsAtInput && listing.endsAt) {
 		const dt = new Date(listing.endsAt);
-
 		endsAtInput.value = dt.toISOString().slice(0, 16);
 	}
 
+	/* Fill media URL inputs */
 	const media = Array.isArray(listing.media) ? listing.media : [];
 	if (media1Input) media1Input.value = media[0]?.url || "";
 	if (media2Input) media2Input.value = media[1]?.url || "";
 	if (media3Input) media3Input.value = media[2]?.url || "";
 }
 
+/* Initialize the page */
 async function init() {
 	if (!form) return;
 
 	if (isEditMode) {
+		/* Update page heading */
 		const heading = document.querySelector("main h1");
 		if (heading) heading.textContent = "Edit listing";
 		document.title = "Edit listing";
 
 		if (errorBox) errorBox.textContent = "Loading listing…";
 
+		/* Load existing listing data */
 		try {
 			const listing = await fetchListingToEdit(listingId);
 			populateFormFromListing(listing);
@@ -84,11 +96,13 @@ async function init() {
 	}
 }
 
+/* Handle form submit (create or update) */
 if (form) {
 	form.addEventListener("submit", async (event) => {
 		event.preventDefault();
 		errorBox.textContent = "";
 
+		/* Get form values */
 		const title = document.getElementById("listing-title").value.trim();
 		const description = document
 			.getElementById("listing-description")
@@ -99,12 +113,14 @@ if (form) {
 		const media2 = document.getElementById("listing-media-2").value.trim();
 		const media3 = document.getElementById("listing-media-3").value.trim();
 
+		/* Validate required fields */
 		if (!title || !endsAt) {
 			errorBox.textContent = "Title and end date are required.";
 			showToast("Please fill in all required fields.", "error");
 			return;
 		}
 
+		/* Ensure end date is at least 1 hour in the future */
 		const endsAtDate = new Date(endsAt);
 		const nowPlus1Hour = new Date(Date.now() + 60 * 60 * 1000);
 
@@ -115,11 +131,13 @@ if (form) {
 			return;
 		}
 
+		/* Build media array (only include filled inputs) */
 		const media = [];
 		if (media1) media.push({ url: media1 });
 		if (media2) media.push({ url: media2 });
 		if (media3) media.push({ url: media3 });
 
+		/* Prepare listing structure */
 		const newListing = {
 			title,
 			description,
@@ -127,12 +145,14 @@ if (form) {
 			media,
 		};
 
+		/* Setup endpoint + method depending on create/edit mode */
 		const endpoint = isEditMode
 			? `${API_BASE}/auction/listings/${listingId}`
 			: `${API_BASE}/auction/listings`;
 
 		const method = isEditMode ? "PUT" : "POST";
 
+		/* Send request */
 		try {
 			const response = await fetch(endpoint, {
 				method,
@@ -146,6 +166,7 @@ if (form) {
 
 			const data = await response.json();
 
+			/* Handle errors */
 			if (!response.ok) {
 				const message =
 					data.errors?.[0]?.message ||
@@ -155,6 +176,7 @@ if (form) {
 				throw new Error(message);
 			}
 
+			/* Success message */
 			showToast(
 				isEditMode
 					? "Listing updated successfully!"
@@ -162,10 +184,12 @@ if (form) {
 				"success"
 			);
 
+			/* Clear form when creating new listing */
 			if (!isEditMode) {
 				form.reset();
 			}
 
+			/* Redirect to the listing page */
 			const resultListing = data.data ?? data;
 			if (resultListing && resultListing.id) {
 				setTimeout(() => {
@@ -181,4 +205,5 @@ if (form) {
 	});
 }
 
+/* Run initialization */
 init();
