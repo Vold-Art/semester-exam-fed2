@@ -3,6 +3,11 @@ const API_BASE = "https://v2.api.noroff.dev";
 const listingsContainer = document.getElementById("listings");
 const errorBox = document.getElementById("listings-error");
 
+const searchInput = document.getElementById("search-input");
+const searchBtn = document.getElementById("search-btn");
+
+let allListings = [];
+
 async function fetchListings() {
 	const url = `${API_BASE}/auction/listings?_active=true&sort=created&sortOrder=desc&_bids=true&_seller=true`;
 
@@ -64,6 +69,28 @@ function renderListings(listings) {
 		.join("");
 }
 
+function applySearchFilter() {
+	if (!Array.isArray(allListings) || allListings.length === 0) {
+		return;
+	}
+
+	const query = (searchInput?.value || "").trim().toLowerCase();
+
+	if (!query) {
+		renderListings(allListings);
+		return;
+	}
+
+	const filtered = allListings.filter((listing) => {
+		const title = (listing.title || "").toLowerCase();
+		const description = (listing.description || "").toLowerCase();
+
+		return title.includes(query) || description.includes(query);
+	});
+
+	renderListings(filtered);
+}
+
 async function loadListings() {
 	if (!listingsContainer || !errorBox) return;
 
@@ -72,12 +99,32 @@ async function loadListings() {
 
 	try {
 		const listings = await fetchListings();
+		allListings = listings;
 		renderListings(listings);
 	} catch (error) {
 		errorBox.textContent =
 			error instanceof Error ? error.message : "Something went wrong.";
 		listingsContainer.innerHTML = "";
 	}
+}
+
+if (searchBtn) {
+	searchBtn.addEventListener("click", () => {
+		applySearchFilter();
+	});
+}
+
+if (searchInput) {
+	searchInput.addEventListener("keydown", (event) => {
+		if (event.key === "Enter") {
+			event.preventDefault();
+			applySearchFilter();
+		}
+	});
+
+	searchInput.addEventListener("input", () => {
+		applySearchFilter();
+	});
 }
 
 loadListings();
