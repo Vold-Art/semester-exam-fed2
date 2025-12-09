@@ -5,6 +5,9 @@ const myListingsSection = document.getElementById("my-listings");
 const myBidsSection = document.getElementById("my-bids");
 const errorBox = document.getElementById("profile-error");
 
+const profileEditForm = document.getElementById("profile-edit-form");
+const profileEditError = document.getElementById("profile-edit-error");
+
 const API_BASE = "https://v2.api.noroff.dev";
 const API_KEY = "cbaa0f81-8295-47e5-9872-09e6c04de25c";
 
@@ -64,6 +67,26 @@ function renderProfileInfo(profile) {
       </section>
     </article>
   `;
+}
+
+function prefillProfileEditForm(profile) {
+	if (!profileEditForm) return;
+
+	const avatarInput = document.getElementById("profile-avatar-url");
+	const bannerInput = document.getElementById("profile-banner-url");
+	const bioInput = document.getElementById("profile-bio");
+
+	if (avatarInput) {
+		avatarInput.value = (profile.avatar && profile.avatar.url) || "";
+	}
+
+	if (bannerInput) {
+		bannerInput.value = (profile.banner && profile.banner.url) || "";
+	}
+
+	if (bioInput) {
+		bioInput.value = profile.bio || "";
+	}
 }
 
 async function fetchProfile(name) {
@@ -322,6 +345,7 @@ async function loadProfilePage() {
 	try {
 		const profile = await fetchProfile(currentUser.name);
 		renderProfileInfo(profile);
+		prefillProfileEditForm(profile);
 
 		const myListings = await fetchMyListings(currentUser.name);
 		renderMyListings(myListings);
@@ -336,6 +360,59 @@ async function loadProfilePage() {
 				error instanceof Error ? error.message : "Something went wrong.";
 		}
 	}
+}
+
+if (profileEditForm) {
+	profileEditForm.addEventListener("submit", async (event) => {
+		event.preventDefault();
+		if (profileEditError) profileEditError.textContent = "";
+
+		const avatarInput = document.getElementById("profile-avatar-url");
+		const bannerInput = document.getElementById("profile-banner-url");
+		const bioInput = document.getElementById("profile-bio");
+
+		const avatarUrl = avatarInput ? avatarInput.value.trim() : "";
+		const bannerUrl = bannerInput ? bannerInput.value.trim() : "";
+		const bio = bioInput ? bioInput.value.trim() : "";
+
+		const payload = {
+			avatar: avatarUrl ? { url: avatarUrl } : null,
+			banner: bannerUrl ? { url: bannerUrl } : null,
+			bio: bio || null,
+		};
+
+		try {
+			const response = await fetch(
+				`${API_BASE}/auction/profiles/${encodeURIComponent(currentUser.name)}`,
+				{
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+						"X-Noroff-API-Key": API_KEY,
+					},
+					body: JSON.stringify(payload),
+				}
+			);
+
+			const data = await response.json();
+
+			if (!response.ok) {
+				const message =
+					data.errors?.[0]?.message || "Failed to update profile.";
+				throw new Error(message);
+			}
+
+			showToast("Profile updated successfully!", "success");
+
+			await loadProfilePage();
+		} catch (error) {
+			const message =
+				error instanceof Error ? error.message : "Something went wrong.";
+			if (profileEditError) profileEditError.textContent = message;
+			showToast(message, "error");
+		}
+	});
 }
 
 loadProfilePage();

@@ -15,6 +15,43 @@
 
 			<section id="profile-info"></section>
 
+			<section id="profile-edit">
+				<h2>Edit profile</h2>
+
+				<form id="profile-edit-form">
+					<div>
+						<label for="profile-avatar-url">Avatar URL</label>
+						<input
+							type="url"
+							id="profile-avatar-url"
+							placeholder="https://example.com/avatar.jpg"
+						/>
+					</div>
+
+					<div>
+						<label for="profile-banner-url">Banner URL</label>
+						<input
+							type="url"
+							id="profile-banner-url"
+							placeholder="https://example.com/banner.jpg"
+						/>
+					</div>
+
+					<div>
+						<label for="profile-bio">Bio</label>
+						<textarea
+							id="profile-bio"
+							rows="3"
+							placeholder="Write something about yourself"
+						></textarea>
+					</div>
+
+					<button type="submit">Save changes</button>
+				</form>
+
+				<p id="profile-edit-error" style="color: crimson"></p>
+			</section>
+
 			<h2>My Listings</h2>
 			<section id="my-listings"></section>
 
