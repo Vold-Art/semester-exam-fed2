@@ -16,17 +16,19 @@
 		<header id="main-header"></header>
 
 		<main>
-			<h1>Auction Listings</h1>
+			<section id="search-section" class="search-section">
+				<div class="search-inner">
+					<input
+						type="text"
+						id="search-input"
+						class="search-input"
+						placeholder="Search listings..."
+					/>
+					<button id="search-btn" class="btn btn-primary">Search</button>
+				</div>
+			</section>
 
-			<div id="search-section" style="margin: 1rem 0">
-				<input
-					type="text"
-					id="search-input"
-					placeholder="Search listings..."
-					style="padding: 0.5rem; width: 70%; max-width: 300px"
-				/>
-				<button id="search-btn" class="btn btn-primary">Search</button>
-			</div>
+			<h1 class="page-title">Auction Listings</h1>
 
 			<section id="listings"></section>
 

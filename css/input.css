@@ -57,7 +57,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	gap: 0.75rem;
-	padding: 0.75rem 1rem;
+	padding: 1rem 1rem;
 	width: 100%;
 	background-color: #ffffff;
 	color: #282828;
@@ -143,4 +143,31 @@ body {
 		max-width: none;
 		text-align: center;
 	}
+}
+
+/* ======================= */
+/*   INDEX SEARCH SECTION  */
+/* ======================= */
+
+.search-section {
+	background-color: #282828;
+	padding: 1rem;
+	width: 100%;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
+	display: flex;
+	justify-content: flex-start;
+}
+
+.search-inner {
+	width: 100%;
+	max-width: 600px;
+	display: flex;
+	gap: 0.5rem;
+	justify-content: flex-start;
+}
+
+.search-input {
+	@apply px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-800;
+	width: 100%;
+	max-width: 300px;
 }
