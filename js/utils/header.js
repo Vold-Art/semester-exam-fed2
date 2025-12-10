@@ -11,37 +11,48 @@ function renderHeader() {
 
 	/* Build the header HTML */
 	headerElement.innerHTML = `
-  <nav style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #ffffff; color: #282828; width: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.08);">
-    <a href="index.html" style="font-weight: bold; font-size: 1.25rem; color: inherit; text-decoration: none;">
-      Auction House
-    </a>
+    <nav class="main-nav">
+      <div class="main-nav-bar">
+        <a href="index.html" class="main-nav-logo">
+          Auction House
+        </a>
 
-    <div style="display: flex; align-items: center; gap: 0.5rem;">
-      ${
-				user
-					? `
-        <span style="margin-right: 0.5rem;">
-          <strong>${user.name}</strong> 
-          <span style="background:#f3f4f6; padding:0.2rem 0.5rem; border-radius:4px; margin-left:0.5rem; border: 1px solid #e5e7eb; color:#3a3a3a;">
-            ${user.credits ?? 0} credits
-          </span>
-        </span>
-
-        <a href="profile.html" class="btn btn-primary">Profile</a>
-        <a href="create-listing.html" class="btn btn-primary">Create listing</a>
-
-        <button id="logout-button" class="btn btn-secondary">
-          Log out
+        <button 
+          id="nav-toggle" 
+          class="nav-toggle btn btn-secondary"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          ☰
         </button>
-      `
-					: `
-        <a href="login.html" class="btn btn-primary">Log in</a>
-        <a href="register.html" class="btn btn-primary">Register</a>
-      `
-			}
-    </div>
-  </nav>
-`;
+      </div>
+
+      <div id="main-nav-actions" class="main-nav-actions">
+        ${
+					user
+						? `
+          <span class="main-nav-user">
+            <strong>${user.name}</strong> 
+            <span class="main-nav-credits">
+              ${user.credits ?? 0} credits
+            </span>
+          </span>
+
+          <a href="profile.html" class="btn btn-primary">Profile</a>
+          <a href="create-listing.html" class="btn btn-primary">Create listing</a>
+
+          <button id="logout-button" class="btn btn-secondary">
+            Log out
+          </button>
+        `
+						: `
+          <a href="login.html" class="btn btn-primary">Log in</a>
+          <a href="register.html" class="btn btn-primary">Register</a>
+        `
+				}
+      </div>
+    </nav>
+  `;
 
 	/* Add logout functionality when button exists */
 	const logoutButton = document.getElementById("logout-button");
@@ -53,6 +64,17 @@ function renderHeader() {
 
 			/* Redirect to home */
 			window.location.href = "index.html";
+		});
+	}
+
+	/* Add mobile nav toggle functionality */
+	const navToggle = document.getElementById("nav-toggle");
+	const navActions = document.getElementById("main-nav-actions");
+
+	if (navToggle && navActions) {
+		navToggle.addEventListener("click", () => {
+			const isOpen = navActions.classList.toggle("is-open");
+			navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
 		});
 	}
 }
