@@ -4,7 +4,7 @@ body {
 	font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont,
 		"Segoe UI", sans-serif;
 	background-color: #ffffff;
-	color: #0f172a; /* Charcoal color */
+	color: #282828; /* Charcoal color */
 }
 
 /* Button Styling */
@@ -25,11 +25,11 @@ body {
 
 /* Secondary button */
 .btn-secondary {
-	@apply bg-[#0f172a] text-white border-[#0f172a];
+	@apply bg-[#282828] text-white border-[#282828];
 }
 
 .btn-secondary:hover {
-	@apply bg-[#1e293b] shadow-md; /* slate-800 */
+	@apply bg-[#3a3a3a] shadow-md;
 }
 
 /* Danger button */

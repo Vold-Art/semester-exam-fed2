@@ -68,7 +68,8 @@ function renderBidSection(listing) {
         min="1"
         required
       />
-      <button type="submit">Place bid</button>
+      <button type="submit" class="btn btn-secondary">Place bid</button>
+
     </form>
     <p id="bid-error" style="color: crimson"></p>
   `;

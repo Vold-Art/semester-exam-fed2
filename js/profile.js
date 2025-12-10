@@ -249,21 +249,17 @@ function renderMyListings(listings) {
           <p><strong>Highest bid:</strong> ${highestBid}</p>
 
           <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
-            <button 
-              class="edit-listing-btn" 
-              data-listing-id="${listing.id}"
-              style="padding:0.3rem 0.75rem;"
-            >
-              Edit
-            </button>
+            <button class="edit-listing-btn btn btn-secondary" data-listing-id="${
+							listing.id
+						}">
+  Edit
+</button>
 
-            <button 
-              class="delete-listing-btn" 
-              data-listing-id="${listing.id}"
-              style="padding:0.3rem 0.75rem; background:#b91c1c; color:white; border:none;"
-            >
-              Delete
-            </button>
+            <button class="delete-listing-btn btn btn-danger" data-listing-id="${
+							listing.id
+						}">
+  Delete
+</button>
           </div>
         </article>
       `;

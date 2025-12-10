@@ -11,39 +11,37 @@ function renderHeader() {
 
 	/* Build the header HTML */
 	headerElement.innerHTML = `
-    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #ffffff; color: #1f2937; width: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.08);">
-      <a href="index.html" style="font-weight: bold; font-size: 1.25rem; color: inherit; text-decoration: none;">
-        Auction House
-      </a>
+  <nav style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #ffffff; color: #282828; width: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.08);">
+    <a href="index.html" style="font-weight: bold; font-size: 1.25rem; color: inherit; text-decoration: none;">
+      Auction House
+    </a>
 
-      <div style="display: flex; align-items: center;">
-        ${
-					/* Display different options depending on login state */
-					user
-						? `
-      <span style="margin-right: 1rem;">
-        <strong>${user.name}</strong> 
-        <span style="background:#f3f4f6; padding:0.2rem 0.5rem; border-radius:4px; margin-left:0.5rem; border: 1px solid #e5e7eb; color:#4b5563;">
-          ${user.credits ?? 0} credits
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      ${
+				user
+					? `
+        <span style="margin-right: 0.5rem;">
+          <strong>${user.name}</strong> 
+          <span style="background:#f3f4f6; padding:0.2rem 0.5rem; border-radius:4px; margin-left:0.5rem; border: 1px solid #e5e7eb; color:#3a3a3a;">
+            ${user.credits ?? 0} credits
+          </span>
         </span>
-      </span>
 
-      <a href="profile.html" style="margin-right: 1rem; color: inherit; text-decoration: none;">Profile</a>
-      <a href="create-listing.html" style="margin-right: 1rem; color: inherit; text-decoration: none;">Create listing</a>
+        <a href="profile.html" class="btn btn-primary">Profile</a>
+        <a href="create-listing.html" class="btn btn-primary">Create listing</a>
 
-      <button id="logout-button" class="btn btn-primary">
-  Log out
-</button>
-
-    `
-						: `
-      <a href="login.html" style="margin-right: 1rem; color: inherit; text-decoration: none;">Log in</a>
-      <a href="register.html" style="color: inherit; text-decoration: none;">Register</a>
-    `
-				}
-      </div>
-    </nav>
-  `;
+        <button id="logout-button" class="btn btn-secondary">
+          Log out
+        </button>
+      `
+					: `
+        <a href="login.html" class="btn btn-primary">Log in</a>
+        <a href="register.html" class="btn btn-primary">Register</a>
+      `
+			}
+    </div>
+  </nav>
+`;
 
 	/* Add logout functionality when button exists */
 	const logoutButton = document.getElementById("logout-button");
