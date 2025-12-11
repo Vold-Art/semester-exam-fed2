@@ -23,26 +23,28 @@
 						id="search-input"
 						class="search-input"
 						placeholder="Search listings..."
+						aria-label="Search listings"
 					/>
-					<button id="search-btn" class="btn btn-primary">Search</button>
+					<button id="search-btn" class="btn btn-secondary">Search</button>
 				</div>
 			</section>
 
-			<div class="listing-container">
+			<section class="listing-container">
 				<h1 class="page-title">Auction Listings</h1>
 
 				<section id="listings" class="listing-grid"></section>
-				<p id="listings-error" style="color: crimson"></p>
-			</div>
-		</main>
 
-		<script type="module" src="./js/utils/header.js"></script>
-		<script type="module" src="./js/index.js"></script>
+				<p id="listings-error" class="error-text"></p>
+			</section>
+		</main>
 
 		<footer class="site-footer">
 			<p>
 				© 2025 Noroff Auction House. Designed & Developed by Arnt Helge Vold
 			</p>
 		</footer>
+
+		<script type="module" src="./js/utils/header.js"></script>
+		<script type="module" src="./js/index.js"></script>
 	</body>
 </html>

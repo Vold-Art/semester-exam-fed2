@@ -108,6 +108,11 @@ function applySearchFilter() {
 		return title.includes(query) || description.includes(query);
 	});
 
+	if (filtered.length === 0) {
+		listingsContainer.innerHTML = "<p>No matching listings found.</p>";
+		return;
+	}
+
 	renderListings(filtered);
 }
 

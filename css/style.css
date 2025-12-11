@@ -420,6 +420,7 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
   display: flex;
   justify-content: flex-start;
+  margin-bottom: 2rem;
 }
 .search-inner {
   width: 100%;
@@ -442,15 +443,15 @@ body {
 }
 .listing-container {
   max-width: 1200px;
-  margin: 2rem auto;
+  margin: 0 auto 3rem;
   padding: 0 1rem;
 }
 .page-title {
   font-size: 1.25rem;
   font-weight: 600;
   color: #282828;
+  margin: 0 0 1rem;
   padding: 0rem 1rem;
-  text-align: left;
 }
 .listing-grid {
   display: grid;
@@ -467,6 +468,11 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.listing-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
 }
 .listing-image-wrapper {
   width: 100%;
@@ -498,6 +504,7 @@ body {
 .listing-link {
   color: #282828;
   text-decoration: none;
+  display: inline-block;
 }
 .listing-link:hover {
   text-decoration: underline;
@@ -531,6 +538,12 @@ body {
   .listing-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
+}
+#listings-error {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: crimson;
+  text-align: center;
 }
 .listing-page {
   max-width: 1200px;
@@ -907,6 +920,11 @@ body {
   box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.16);
   margin-top: 3rem;
   font-size: 0.9rem;
+}
+.error-text {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: crimson;
 }
 @property --tw-scale-x {
   syntax: "*";
