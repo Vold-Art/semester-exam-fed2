@@ -60,20 +60,28 @@ function renderListings(listings) {
 
 			/* Listing card HTML */
 			return `
-  <article style="border: 1px solid #ccc; padding: 1rem; margin-bottom: 1rem; background: white;">
-    <h2>
-      <a href="listing.html?id=${listing.id}">
-        ${title}
-      </a>
-    </h2>
+  <article class="listing-card">
     ${
 			mediaUrl
-				? `<img src="${mediaUrl}" alt="" style="max-width: 100%; height: auto; margin: 0.5rem 0;" />`
+				? `
+      <div class="listing-image-wrapper">
+        <img src="${mediaUrl}" alt="${title}" class="listing-image" />
+      </div>
+      `
 				: ""
 		}
-    <p>${description}</p>
-    <p><strong>Ends at:</strong> ${endsAt}</p>
-    <p><strong>Highest bid:</strong> ${highestBid}</p>
+    <div class="listing-content">
+      <h2 class="listing-title">
+        <a href="listing.html?id=${listing.id}" class="listing-link">
+          ${title}
+        </a>
+      </h2>
+      <p class="listing-description">${description}</p>
+      <div class="listing-meta">
+        <p><strong>Ends at:</strong> ${endsAt}</p>
+        <p><strong>Highest bid:</strong> ${highestBid}</p>
+      </div>
+    </div>
   </article>
 `;
 		})
