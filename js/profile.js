@@ -231,35 +231,33 @@ function renderMyListings(listings) {
 				: 0;
 
 			return `
-        <article style="background:white; padding:1rem; border:1px solid #ccc; margin-bottom: 1rem;">
+        <article class="profile-card">
           <h3>
             <a href="listing.html?id=${listing.id}">
               ${title}
             </a>
           </h3>
 
-          ${
-						firstImage
-							? `<img src="${firstImage}" alt="${title}" style="max-width:100%; height:auto; margin:0.5rem 0;" />`
-							: ""
-					}
+          ${firstImage ? `<img src="${firstImage}" alt="${title}" />` : ""}
 
           <p>${description}</p>
           <p><strong>Ends at:</strong> ${endsAt}</p>
           <p><strong>Highest bid:</strong> ${highestBid}</p>
 
           <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
-            <button class="edit-listing-btn btn btn-secondary" data-listing-id="${
-							listing.id
-						}">
-  Edit
-</button>
+            <button 
+              class="btn btn-primary edit-listing-btn" 
+              data-listing-id="${listing.id}"
+            >
+              Edit
+            </button>
 
-            <button class="delete-listing-btn btn btn-danger" data-listing-id="${
-							listing.id
-						}">
-  Delete
-</button>
+            <button 
+              class="btn btn-danger delete-listing-btn" 
+              data-listing-id="${listing.id}"
+            >
+              Delete
+            </button>
           </div>
         </article>
       `;
@@ -325,18 +323,14 @@ function renderMyBids(bids) {
 				: "No end date";
 
 			return `
-        <article style="background:white; padding:1rem; border:1px solid #ccc; margin-bottom: 1rem;">
+        <article class="profile-card">
           <h3>
             <a href="listing.html?id=${listing.id}">
               ${title}
             </a>
           </h3>
 
-          ${
-						firstImage
-							? `<img src="${firstImage}" alt="${title}" style="max-width:100%; height:auto; margin:0.5rem 0;" />`
-							: ""
-					}
+          ${firstImage ? `<img src="${firstImage}" alt="${title}" />` : ""}
 
           <p><strong>Your bid:</strong> ${myBidAmount}</p>
           <p><strong>Current highest bid:</strong> ${highestBid}</p>

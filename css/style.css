@@ -676,6 +676,113 @@ body {
     align-items: flex-start;
   }
 }
+.profile-page {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem 3rem;
+}
+.profile-page > h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #282828;
+  margin-bottom: 1.5rem;
+}
+#profile-info {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 1.5rem;
+}
+#profile-edit {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 2rem;
+}
+#profile-edit h2, .profile-section > h2 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #282828;
+  margin: 0 0 1rem;
+}
+.profile-section {
+  margin-bottom: 2rem;
+}
+#profile-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+#profile-edit-form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+#profile-edit-form label {
+  font-size: 0.9rem;
+  color: #374151;
+}
+#profile-edit-form input, #profile-edit-form textarea {
+  border-radius: var(--radius-md);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: var(--color-gray-300);
+  background-color: var(--color-white);
+  padding-inline: calc(var(--spacing) * 3);
+  padding-block: calc(var(--spacing) * 2);
+  color: var(--color-gray-800);
+  font-size: 0.95rem;
+}
+#profile-edit-error, #profile-error {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: crimson;
+}
+#my-listings, #my-bids {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.profile-card {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.profile-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem;
+}
+.profile-card a {
+  color: #282828;
+  text-decoration: none;
+}
+.profile-card a:hover {
+  text-decoration: underline;
+}
+.profile-card img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+.profile-card p {
+  margin: 0.15rem 0;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+@media (min-width: 900px) {
+  #my-listings,	#my-bids {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 @property --tw-scale-x {
   syntax: "*";
   inherits: false;

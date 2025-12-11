@@ -5,12 +5,18 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>My Profile</title>
 		<link rel="stylesheet" href="./css/style.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
 
 	<body>
 		<header id="main-header"></header>
 
-		<main>
+		<main class="profile-page">
 			<h1>My Profile</h1>
 
 			<section id="profile-info"></section>
@@ -52,11 +58,15 @@
 				<p id="profile-edit-error" style="color: crimson"></p>
 			</section>
 
-			<h2>My Listings</h2>
-			<section id="my-listings"></section>
+			<section class="profile-section">
+				<h2>My Listings</h2>
+				<div id="my-listings"></div>
+			</section>
 
-			<h2>My Bids</h2>
-			<section id="my-bids"></section>
+			<section class="profile-section">
+				<h2>My Bids</h2>
+				<div id="my-bids"></div>
+			</section>
 
 			<p id="profile-error" style="color: crimson"></p>
 		</main>
