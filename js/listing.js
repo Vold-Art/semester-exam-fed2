@@ -96,25 +96,51 @@ function renderListing(listing) {
 	/* List all bids */
 	const bids = Array.isArray(listing.bids) ? listing.bids : [];
 	const bidList = bids
-		.map((b) => `<li>${b.bidderName ?? "Anonymous"}: ${b.amount}</li>`)
+		.map(
+			(b) => `
+        <li class="listing-bid-item">
+          <span class="listing-bid-name">${b.bidderName ?? "Anonymous"}</span>: 
+          <span class="listing-bid-amount">${b.amount}</span>
+        </li>
+      `
+		)
 		.join("");
 
 	/* Build listing card HTML */
 	listingContainer.innerHTML = `
-    <article style="background:white; padding:1rem; border:1px solid #ccc">
-      <h2>${title}</h2>
-
+    <article class="listing-details">
+      
       ${
 				firstImage
-					? `<img src="${firstImage}" style="max-width:100%; height:auto; margin:1rem 0;" />`
+					? `
+          <div class="listing-details-image-wrapper">
+            <img 
+              src="${firstImage}" 
+              alt="${title}" 
+              class="listing-details-image"
+            />
+          </div>
+        `
 					: ""
 			}
 
-      <p>${description}</p>
-      <p><strong>Ends at:</strong> ${endsAt}</p>
+      <div class="listing-details-content">
+        <h2 class="listing-details-title">${title}</h2>
 
-      <h3>Bids</h3>
-      <ul>${bidList || "<li>No bids yet.</li>"}</ul>
+        <p class="listing-details-description">
+          ${description}
+        </p>
+
+        <p class="listing-details-meta">
+          <strong>Ends at:</strong> ${endsAt}
+        </p>
+
+        <h3 class="listing-details-bids-heading">Bids</h3>
+        <ul class="listing-details-bids-list">
+          ${bidList || `<li class="listing-bid-item">No bids yet.</li>`}
+        </ul>
+      </div>
+
     </article>
   `;
 
