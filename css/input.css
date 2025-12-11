@@ -577,3 +577,61 @@ body {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 }
+
+/* ======================= */
+/*   CREATE LISTING PAGE   */
+/* ======================= */
+
+.create-page {
+	max-width: 1200px;
+	margin: 2rem auto;
+	padding: 0 1rem 3rem;
+}
+
+.create-page > h1 {
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: #282828;
+	margin-bottom: 1.5rem;
+}
+
+.create-listing-card {
+	background-color: #ffffff;
+	border-radius: 0.75rem;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
+	padding: 1.5rem 1.75rem;
+}
+
+#create-listing-form {
+	display: flex;
+	flex-direction: column;
+	gap: 0.9rem;
+}
+
+#create-listing-form > div {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+#create-listing-form label {
+	font-size: 0.9rem;
+	color: #374151;
+}
+
+#create-listing-form input,
+#create-listing-form textarea {
+	@apply px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-800;
+	font-size: 0.95rem;
+}
+
+#create-listing-form div p {
+	margin: 0;
+	color: #6b7280;
+}
+
+#create-listing-error {
+	margin-top: 0.75rem;
+	font-size: 0.9rem;
+	color: crimson;
+}
