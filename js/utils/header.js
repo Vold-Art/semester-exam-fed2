@@ -11,7 +11,7 @@ function renderHeader() {
 
 	/* Build the header HTML */
 	headerElement.innerHTML = `
-    <nav class="main-nav">
+    <nav class="main-nav" aria-label="Main navigation">
       <div class="main-nav-bar">
         <a href="index.html" class="main-nav-logo">
           Auction House
@@ -19,6 +19,7 @@ function renderHeader() {
 
         <button 
           id="nav-toggle" 
+          type="button"
           class="nav-toggle btn btn-secondary"
           aria-expanded="false"
           aria-label="Toggle navigation"
