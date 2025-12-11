@@ -5,34 +5,62 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Register</title>
 		<link rel="stylesheet" href="./css/style.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
 	<body>
-		<main>
+		<header id="main-header"></header>
+
+		<main class="auth-page">
 			<h1>Register</h1>
 
-			<form id="register-form">
-				<label>Name</label>
-				<input id="reg-name" type="text" />
+			<section class="auth-card">
+				<form id="register-form" class="auth-form">
+					<div class="auth-field">
+						<label for="reg-name">Name</label>
+						<input id="reg-name" type="text" />
+					</div>
 
-				<label>Email</label>
-				<input id="reg-email" type="email" />
+					<div class="auth-field">
+						<label for="reg-email">Email</label>
+						<input id="reg-email" type="email" />
+					</div>
 
-				<label>Password</label>
-				<input id="reg-password" type="password" />
+					<div class="auth-field">
+						<label for="reg-password">Password</label>
+						<input id="reg-password" type="password" />
+					</div>
 
-				<button type="submit" class="btn btn-secondary">Register</button>
-			</form>
+					<button type="submit" class="btn btn-secondary">
+						Create account
+					</button>
+				</form>
 
-			<p><a href="./login.html">Already have an account? Login</a></p>
+				<p class="auth-switch">
+					Already have an account?
+					<a href="./login.html">Log in</a>
+				</p>
 
-			<p id="register-error"></p>
+				<p id="register-error" class="auth-error"></p>
+			</section>
 		</main>
 
+		<script type="module" src="./js/utils/header.js"></script>
 		<script type="module" src="./js/register.js"></script>
 
 		<div
 			id="toast-container"
 			class="fixed inset-0 flex items-center justify-center pointer-events-none z-50"
 		></div>
+
+		<footer class="site-footer">
+			<p>
+				© 2025 Noroff Auction House. Designed & Developed by Arnt Helge Vold
+			</p>
+		</footer>
 	</body>
 </html>

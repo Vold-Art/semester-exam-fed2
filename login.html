@@ -5,31 +5,55 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Login</title>
 		<link rel="stylesheet" href="./css/style.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
 	<body>
-		<main>
-			<h1>Login</h1>
+		<header id="main-header"></header>
 
-			<form id="login-form">
-				<label>Email</label>
-				<input id="login-email" type="email" />
+		<main class="auth-page">
+			<h1>Log in</h1>
 
-				<label>Password</label>
-				<input id="login-password" type="password" />
+			<section class="auth-card">
+				<form id="login-form" class="auth-form">
+					<div class="auth-field">
+						<label for="login-email">Email</label>
+						<input id="login-email" type="email" />
+					</div>
 
-				<button type="submit" class="btn btn-secondary">Log in</button>
-			</form>
+					<div class="auth-field">
+						<label for="login-password">Password</label>
+						<input id="login-password" type="password" />
+					</div>
 
-			<p><a href="./register.html">Don’t have an account? Register</a></p>
+					<button type="submit" class="btn btn-secondary">Log in</button>
+				</form>
 
-			<p id="login-error"></p>
+				<p class="auth-switch">
+					Don’t have an account?
+					<a href="./register.html">Register</a>
+				</p>
+
+				<p id="login-error" class="auth-error"></p>
+			</section>
 		</main>
 
+		<script type="module" src="./js/utils/header.js"></script>
 		<script type="module" src="./js/login.js"></script>
 
 		<div
 			id="toast-container"
 			class="fixed inset-0 flex items-center justify-center pointer-events-none z-50"
 		></div>
+
+		<footer class="site-footer">
+			<p>
+				© 2025 Noroff Auction House. Designed & Developed by Arnt Helge Vold
+			</p>
+		</footer>
 	</body>
 </html>
