@@ -293,6 +293,16 @@ body {
   background-color: #ffffff;
   color: #282828;
 }
+html, body {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+}
+main {
+  flex: 1;
+}
 .btn {
   cursor: pointer;
   border-radius: var(--radius-md);
