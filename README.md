@@ -39,6 +39,7 @@ npm run dev
 
 ## Folder Structure
 
+```bash
 semester-exam-fed2/
 ├── css/
 │ ├── input.css
@@ -65,6 +66,7 @@ semester-exam-fed2/
 ├── package.json
 ├── package-lock.json
 └── README.md
+```
 
 ---
 
