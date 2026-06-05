@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
@@ -19,28 +19,41 @@
 	<body>
 		<header id="main-header"></header>
 
-		<main>
-			<section id="search-section" class="search-section">
-				<div class="search-inner">
-					<input
-						type="text"
-						id="search-input"
-						class="search-input"
-						placeholder="Search listings..."
-						aria-label="Search listings"
-					/>
-					<button id="search-btn" class="btn btn-secondary">Search</button>
-				</div>
-			</section>
+		<section id="search-section" class="search-section">
+			<div class="search-inner">
+				<label for="search-input" class="sr-only">Search listings</label>
 
-			<section class="listing-container">
-				<h1 class="page-title">Auction Listings</h1>
+				<input
+					type="search"
+					id="search-input"
+					class="search-input"
+					placeholder="Search listings..."
+				/>
 
-				<section id="listings" class="listing-grid"></section>
+				<button id="search-btn" class="btn btn-secondary">Search</button>
+			</div>
+		</section>
 
-				<p id="listings-error" class="error-text"></p>
-			</section>
-		</main>
+		<section class="listing-container">
+			<h1 class="page-title">Auction Listings</h1>
+
+			<p id="listing-status" class="sr-only" aria-live="polite"></p>
+
+			<section id="listings" class="listing-grid" aria-live="polite"></section>
+
+			<nav
+				id="pagination"
+				class="pagination"
+				aria-label="Listings pagination"
+			></nav>
+
+			<p
+				id="listings-error"
+				class="error-text"
+				role="alert"
+				aria-live="assertive"
+			></p>
+		</section>
 
 		<script type="module" src="./js/utils/header.js"></script>
 		<script type="module" src="./js/index.js"></script>

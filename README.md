@@ -1,5 +1,5 @@
 <p>
-  <img src="./semester-project-2-screenshot.jpg" alt="Semester Project 2 Screenshot"/>
+  <img src="./semester-project-2-screenshot.webp" alt="Semester Project 2 Screenshot"/>
 </p>
 
 # Noroff Auction House
@@ -7,6 +7,18 @@
 A responsive front-end auction website built as part of the **Front-end Development Semester Project 2** at Noroff.
 
 The application allows users to browse auction listings, place bids, create their own listings, and manage their profile. Authentication, listings, and bidding functionality are handled through the Noroff Auction API.
+
+---
+
+## Live Site
+
+[View live site](https://vold-art.github.io/semester-exam-fed2/)
+
+---
+
+## Repository
+
+[View GitHub repository](https://github.com/Vold-Art/semester-exam-fed2)
 
 ---
 
@@ -67,6 +79,23 @@ semester-exam-fed2/
 ├── package-lock.json
 └── README.md
 ```
+
+---
+
+## Portfolio 2 Improvements
+
+For Portfolio 2, the auction listings page was reviewed and improved to make the browsing experience clearer, safer and easier to use.
+
+Improvements include:
+
+Added pagination to the auction listings page so listings are shown in smaller groups.
+Added accessible status messaging with aria-live.
+Added an accessible pagination navigation region.
+Improved search feedback for empty and filtered results.
+Escaped API content before rendering it with innerHTML.
+Improved image alt text fallback for listing images.
+
+These changes improve usability, accessibility, and code safety on the main listings page.
 
 ---
 
